@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>分类列表 | 菜谱大全</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <!-- <link rel="shortcut icon" href="/favicon.ico"> -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link rel="stylesheet" href="http://g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
+    <link rel="stylesheet" href="./css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="./css/public.css">
+    <link rel="stylesheet" href="./css/reset.css">
+    <style>
+        .bar-nav {
+            background: #0894ec;
+        }
+
+        .icon-left:before {
+            color: #fff;
+        }
+
+        .title {
+            color: #fff;
+        }
+
+        .list-block {
+            margin: .3rem 0;
+        }
+
+        .item-inner a {
+            color: #3d4145;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="page-group">
+
+        <div class="page page-current" id='router'>
+
+            <header class="bar bar-nav">
+                <a class="button button-link button-nav pull-left back">
+                    <span class="icon icon-left"></span>
+                </a>
+                <h1 class="title">分类</h1>
+            </header>
+
+
+            <div class="content">
+                <div class="list-block media-list classlist">
+                    <ul>
+
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src='http://g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+    <script src='http://g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
+    <script src='./js/swiper-3.4.2.min.js'></script>
+    <script src="./js/config.js"></script>
+    <script>
+
+        config.SetTheme()
+        var par = GetRequest()
+
+
+        $.ajax({
+            url: config.index,
+            type: "GET",
+            dataType: "jsonp",
+            data: {
+                key: config.AppKey,
+                cid: par.id
+            },
+            success: function (res) {
+                if (res.resultcode === "200") {
+                    localStorage.setItem("classlist", JSON.stringify(res.result.data))
+                    for (var i = 0, list = res.result.data; i < list.length; i++) {
+                        $(".classlist ul").append(`<li class="item-content">
+                                                        <div class="item-media">
+                                                            <a href="info.html?id=${list[i].id}&action=classlist" target="_blank">
+                                                                <img src="${list[i].albums[0]}" width="44">
+                                                            </a>    
+                                                        </div>
+                                                        <div class="item-inner">
+                                                           <a href="info.html?id=${list[i].id}&action=classlist" target="_blank">  
+                                                              <div class="item-title-row">
+                                                                <div class="item-title">${list[i].title}</div>
+                                                              </div>
+                                                              <div class="item-subtitle">${list[i].imtro}</div>
+                                                            </a>                                                                     
+                                                        </div> 
+                                                    </li>`)
+                    }
+                } else {
+                    $.toast("网络请求失败");
+                }
+            },
+            error: function (err) {
+                $.toast("网络请求失败");
+            }
+        })
+
+
+        function GetRequest() {
+            var url = location.search;
+            var theRequest = new Object();
+            if (url.indexOf("?") != -1) {
+                var str = url.substr(1);
+                strs = str.split("&");
+                for (var i = 0; i < strs.length; i++) {
+                    theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+                }
+            }
+            return theRequest;
+        }
+    </script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>分类 | 菜谱大全</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <!-- <link rel="shortcut icon" href="/favicon.ico"> -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link rel="stylesheet" href="http://g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
+    <link rel="stylesheet" href="./css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="./css/public.css">
+    <link rel="stylesheet" href="./css/reset.css">
+    <style>
+        .bar-nav {
+            background: #0894ec;
+        }
+        
+        .title {
+            color: #fff;
+        }
+        
+        .icon-left:before {
+            color: #fff;
+        }
+        
+        .class-content {
+            height: 100%;
+            padding-bottom: 2.5rem;
+        }
+        
+        .class-left,
+        .class-right {
+            height: 100%;
+            float: left;
+            overflow-y: scroll;
+        }
+        
+        .class-left {
+            background: #f8f8f8;
+        }
+        
+        .class-right {
+            background: #fff;
+        }
+        
+        .class-left li {
+            width: 100%;
+            font-size: .7rem;
+            height: 2.3rem;
+            line-height: 2.3rem;
+            text-align: center;
+            padding: 0 .1rem;
+        }
+        
+        .col-20-me {
+            width: 23%;
+        }
+        
+        .col-80-me {
+            width: 77%;
+            padding-left: 10px;
+        }
+        
+        .active-me {
+            color: red !important;
+        }
+        
+        .right-item li p {
+            width: 3.5rem;
+            height: 3.5rem;
+            background: #dadada;
+            font-size: .7rem;
+            line-height: 3.5rem;
+            text-align: center;
+            background: url("./img/icon.jpg") no-repeat;
+            background-size: cover;
+        }
+        
+        .right-item li {
+            float: left;
+            margin-right: 1.1rem;
+            text-align: center;
+        }
+        
+        .right-item ul li:nth-child(3n) {
+            margin-right: 0;
+        }
+        
+        .item-list a {
+            color: #3d4145;
+            font-size: .75rem
+        }
+        
+        .back-class {
+            color: #5f646e
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="page-group">
+
+        <div class="page page-current" id='router'>
+            <header class="bar bar-nav">
+                <a class="icon icon-left pull-left back back-class"></a>
+                <h1 class="title">分类</h1>
+            </header>
+
+            <div class="content">
+                <div class="class-content">
+                    <div class="col-20-me class-left">
+                        <ul>
+                        </ul>
+                    </div>
+                    <div class="col-80-me class-right">
+                        <div class="right-item">
+                            <div class="item-list">
+                                <h4>菜式菜品</h4>
+                                <ul>
+
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 工具栏 -->
+            <nav class="bar bar-tab">
+                <a class="tab-item external" href="index.html">
+                    <span class="icon icon-home"></span>
+                    <span class="tab-label">首页</span>
+                </a>
+                <a class="tab-item external active" href="class.html">
+                    <span class="icon icon-app"></span>
+                    <span class="tab-label">分类</span>
+                </a>
+                <a class="tab-item external" href="setting.html">
+                    <span class="icon icon-settings"></span>
+                    <span class="tab-label">设置</span>
+                </a>
+            </nav>
+
+
+        </div>
+
+
+    </div>
+    <script src='http://g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+    <script src='http://g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
+    <script src='./js/swiper-3.4.2.min.js'></script>
+    <script src='./js/config.js'></script>
+    <script>
+        config.SetTheme()
+        var listdata = []
+        $.ajax({
+            url: `${config.category}${config.AppKey}`,
+            type: "GET",
+            dataType: "jsonp",
+            success: function(res) {
+                if (res.resultcode === "200") {
+                    var data = res.result
+                    localStorage.setItem("data", JSON.stringify(data))
+                    for (var i = 0; i < data.length; i++) {
+                        listdata.push({
+                            id: data[i].parentId,
+                            name: data[i].name
+                        })
+                    }
+
+                    RenderingLeftMenu(listdata)
+                } else {
+                    $.toast("网络请求失败");
+                }
+            },
+            error: function(err) {
+                console.log(err);
+            }
+        })
+
+
+
+        function RenderingLeftMenu(item) {
+            for (var i in item) {
+                $(".class-left ul").append(`
+                        <li class="${ i == 0 ? 'active-me' : ''}" onclick="changeItem(this,${item[i].id})">${item[i].name}</li>
+                `)
+            }
+
+            changeItem($(".class-left ul li")[0], item[0].id)
+
+        }
+
+
+        function changeItem(html, id) {
+
+            // 改变样式
+            var li = $(".class-left ul li")
+            for (var k = 0; k < li.length; k++) {
+                if (li[k].className == "active-me") {
+                    li[k].className = ""
+                }
+            }
+
+            html.className = "active-me"
+
+
+
+            // 遍历获取你点击的对应数据
+            var dataList = JSON.parse(localStorage.getItem("data")),
+                info = []
+            for (var j = 0; j < dataList.length; j++) {
+                if (id == dataList[j].parentId) {
+                    info = dataList[j]
+                }
+            }
+
+            // 清空上一次页面html代码
+            $(".item-list ul").empty()
+            $(".item-list h4").text(info.name)
+
+            // 渲染你点击的对应分类页面
+            var infoArr = info.list
+            for (var i = 0; i < infoArr.length; i++) {
+                $(".item-list ul").append(`<li>
+                                               <a href="classlist.html?id=${infoArr[i].id}" tarfet="_blank">
+                                                  <p></p>
+                                                  
+                                                  <span>${infoArr[i].name}</span>  
+                                                 
+                                               </a>
+                                            </li>`)
+            }
+        }
+    </script>
+</body>
+
+</html>
