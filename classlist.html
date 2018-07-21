@@ -10,7 +10,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
-    <link rel="stylesheet" href="http://g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
+    <link rel="stylesheet" href="https://g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
     <link rel="stylesheet" href="./css/swiper-3.4.2.min.css">
     <link rel="stylesheet" href="./css/public.css">
     <link rel="stylesheet" href="./css/reset.css">
@@ -18,19 +18,19 @@
         .bar-nav {
             background: #0894ec;
         }
-
+        
         .icon-left:before {
             color: #fff;
         }
-
+        
         .title {
             color: #fff;
         }
-
+        
         .list-block {
             margin: .3rem 0;
         }
-
+        
         .item-inner a {
             color: #3d4145;
         }
@@ -67,7 +67,6 @@
     <script src='./js/swiper-3.4.2.min.js'></script>
     <script src="./js/config.js"></script>
     <script>
-
         config.SetTheme()
         var par = GetRequest()
 
@@ -80,7 +79,7 @@
                 key: config.AppKey,
                 cid: par.id
             },
-            success: function (res) {
+            success: function(res) {
                 if (res.resultcode === "200") {
                     localStorage.setItem("classlist", JSON.stringify(res.result.data))
                     for (var i = 0, list = res.result.data; i < list.length; i++) {
@@ -104,7 +103,7 @@
                     $.toast("网络请求失败");
                 }
             },
-            error: function (err) {
+            error: function(err) {
                 $.toast("网络请求失败");
             }
         })

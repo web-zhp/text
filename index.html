@@ -9,7 +9,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
-    <link rel="stylesheet" href="http://g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
+    <link rel="stylesheet" href="https://g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
     <link rel="stylesheet" href="./css/swiper-3.4.2.min.css">
     <link rel="stylesheet" href="./css/public.css">
     <link rel="stylesheet" href="./css/index.css">
@@ -164,13 +164,12 @@
     <script src="./js/config.js"></script>
     <script src="./js/index.js"></script>
     <script>
-
         $.init()
         config.SetTheme()
-        $(".open-search").on('click', function () {
+        $(".open-search").on('click', function() {
             $.popup('.popup-search');
 
-            $("#search").change(function () {
+            $("#search").change(function() {
                 $.showIndicator();
 
                 $.ajax({
@@ -183,7 +182,7 @@
                         rn: "15",
                         pn: "1"
                     },
-                    success: function (res) {
+                    success: function(res) {
                         if (res.resultcode === "200") {
                             var list = res.result.data
                             localStorage.setItem("search", JSON.stringify(list));
@@ -214,13 +213,13 @@
                             $.hideIndicator();
                         }
                     },
-                    error: function (err) {
+                    error: function(err) {
                         console.log(err);
                     }
                 })
             })
 
-            $(".searchbar-cancel").on('click', function () {
+            $(".searchbar-cancel").on('click', function() {
                 $("#search").val("")
             })
         });
@@ -233,7 +232,7 @@
             pagination: '.swiper-pagination',
             autoplay: 1000,
             speed: 1000,
-        })        
+        })
     </script>
 </body>
 
