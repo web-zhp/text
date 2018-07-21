@@ -1,9 +1,9 @@
 var config = {
     // 菜谱大全
-    query: 'http://apis.juhe.cn/cook/query.php',
-    category: 'http://apis.juhe.cn/cook/category?key=',
+    query: 'https://apis.juhe.cn/cook/query.php',
+    category: 'https://apis.juhe.cn/cook/category?key=',
     AppKey: '7d4ec1832435f677062838354bad840a',
-    index: 'http://apis.juhe.cn/cook/index',
+    index: 'https://apis.juhe.cn/cook/index',
     SetTheme: function() {
         if (localStorage.getItem('theme') == null) {} else {
             $('body').addClass('theme-dark');
