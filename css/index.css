@@ -115,6 +115,7 @@ a {
 }
 
 .bar-nav~.content {
+    padding: 0 10px;
     padding-bottom: 2.4rem !important;
 }
 
